@@ -95,8 +95,7 @@ checksum = "a1d728cc89cf3aee9ff92b05e62b19ee65a02b5702cff7d5a377e32c6ae29d8d"
 [[package]]
 name = "codspeed"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3b847e05a34be5c38f3f2a5052178a3bd32e6b5702f3ea775efde95c483a539"
+source = "git+https://github.com/CodSpeedHQ/codspeed-rust/?branch=cod-1711-codspeed-rust-add-analysis-mode-support#0a30bef83e474becbd0fbab9b8ae275c2f3c51ff"
 dependencies = [
  "anyhow",
  "cc",
@@ -113,8 +112,7 @@ dependencies = [
 [[package]]
 name = "codspeed-divan-compat"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0f0e9fe5eaa39995ec35e46407f7154346cc25bd1300c64c21636f3d00cb2cc"
+source = "git+https://github.com/CodSpeedHQ/codspeed-rust/?branch=cod-1711-codspeed-rust-add-analysis-mode-support#0a30bef83e474becbd0fbab9b8ae275c2f3c51ff"
 dependencies = [
  "clap",
  "codspeed",
@@ -126,8 +124,7 @@ dependencies = [
 [[package]]
 name = "codspeed-divan-compat-macros"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "88c8babf2a40fd2206a2e030cf020d0d58144cd56e1dc408bfba02cdefb08b4f"
+source = "git+https://github.com/CodSpeedHQ/codspeed-rust/?branch=cod-1711-codspeed-rust-add-analysis-mode-support#0a30bef83e474becbd0fbab9b8ae275c2f3c51ff"
 dependencies = [
  "divan-macros",
  "itertools",
@@ -140,8 +137,7 @@ dependencies = [
 [[package]]
 name = "codspeed-divan-compat-walltime"
 version = "4.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f26092328e12a36704ffc552f379c6405dd94d3149970b79b22d371717c2aae"
+source = "git+https://github.com/CodSpeedHQ/codspeed-rust/?branch=cod-1711-codspeed-rust-add-analysis-mode-support#0a30bef83e474becbd0fbab9b8ae275c2f3c51ff"
 dependencies = [
  "cfg-if",
  "clap",
