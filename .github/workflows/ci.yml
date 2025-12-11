@@ -80,3 +80,4 @@ jobs:
         with:
           mode: walltime
           run: cargo codspeed run
+          upload-url: https://api.staging.preview.codspeed.io/upload
