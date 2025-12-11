@@ -43,7 +43,7 @@ jobs:
         run: cargo codspeed build
 
       - name: Install the runner
-        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.1/codspeed-runner-installer.sh | sh 
+        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.2-beta.1/codspeed-runner-installer.sh | sh
 
       # FIXME: Later on, ensure it works with sudo in the action
       - run: codspeed run --mode ${{ matrix.mode }} --api-url https://gql.staging.preview.codspeed.io/ --upload-url https://api.staging.preview.codspeed.io/upload  -- target/codspeed/analysis/matthias-memory-profiling-demo/rle_bench
