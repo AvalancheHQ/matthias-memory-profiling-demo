@@ -1,0 +1,51 @@
+name: CodSpeed Benchmarks
+
+on:
+  push:
+    branches:
+      - "main" # or "master"
+  pull_request:
+  # `workflow_dispatch` allows CodSpeed to trigger backtest
+  # performance analysis in order to generate initial data.
+  workflow_dispatch:
+
+permissions: # optional for public repositories
+  contents: read # required for actions/checkout
+  id-token: write # required for OIDC authentication with CodSpeed
+  
+jobs:
+  benchmarks:
+    name: Run benchmarks
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        include:
+          - mode: memory
+            runner: ubuntu-latest
+          - mode: walltime
+            runner: codspeed-macro
+    steps:
+      - uses: actions/checkout@v5
+      - name: Setup rust toolchain, cache and cargo-codspeed binary
+        uses: moonrepo/setup-rust@v1
+        with:
+          channel: stable
+          cache-target: release
+          bins: cargo-codspeed
+
+
+      # FIXME: Install released binary
+      - name: Install dependencies required for libbpf-sys (vendored feature)
+        run: sudo apt-get update && sudo apt-get install -y autopoint bison flex
+      - run: cargo install memtrack --git https://github.com/CodSpeedHQ/runner/
+
+      - name: Build the benchmark target(s)
+        run: cargo codspeed build 
+
+      - name: Run the benchmarks
+        uses: CodSpeedHQ/action@main
+        with:
+          runner-version: v4.4.2-beta.1
+          mode: ${{ matrix.mode }}
+          run: cargo codspeed run
+          upload-url: https://api.staging.preview.codspeed.io/upload
