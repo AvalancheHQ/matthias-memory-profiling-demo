@@ -35,7 +35,7 @@ jobs:
 
 
       - name: Build the benchmark target(s)
-        run: cargo codspeed build
+        run: cargo codspeed build -m instrumentation
 
       - name: Install the runner
         # run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.2-beta.1/codspeed-runner-installer.sh | sh
@@ -48,9 +48,8 @@ jobs:
           cargo install memtrack --git https://github.com/CodSpeedHQ/runner/
           echo "CODSPEED_MEMTRACK_BINARY=$(which codspeed-memtrack)" >> $GITHUB_ENV
 
-
       # FIXME: Later on, ensure it works with sudo in the action
-      - run: codspeed run --mode ${{ matrix.mode }} --api-url https://gql.staging.preview.codspeed.io/ --upload-url https://api.staging.preview.codspeed.io/upload  -- target/codspeed/analysis/matthias-memory-profiling-demo/rle_bench
+      - run: codspeed run --mode ${{ matrix.mode }} --api-url https://gql.staging.preview.codspeed.io/ --upload-url https://api.staging.preview.codspeed.io/upload  -- target/codspeed/instrumentation/matthias-memory-profiling-demo/rle_bench
 
       # - name: Run the benchmarks
       #   uses: CodSpeedHQ/action@main
