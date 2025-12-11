@@ -41,12 +41,20 @@ jobs:
         run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.2-beta.1/codspeed-runner-installer.sh | sh
         # run: cargo install codspeed-runner --git https://github.com/codSpeedHQ/runner/ --branch cod-1793-runner-foward-environment-in-sudo
 
-      # FIXME: Install released binary
-      - name: Install dependencies required for libbpf-sys (vendored feature)
-        run: sudo apt-get update && sudo apt-get install -y autopoint bison flex
-      - run: |
-          cargo install memtrack --git https://github.com/CodSpeedHQ/runner/
-          echo "CODSPEED_MEMTRACK_BINARY=$(which codspeed-memtrack)" >> $GITHUB_ENV
+      - name: Install memtrack from pre-built artifact
+        run: |
+          # Download the pre-built memtrack binary from the workflow artifact
+          gh run download 20066885444 --repo CodSpeedHQ/runner --name artifacts-build-local-x86_64-unknown-linux-gnu
+
+          # Extract and install the binary
+          tar -xzf memtrack-x86_64-unknown-linux-gnu.tar.gz
+          chmod +x memtrack-x86_64-unknown-linux-gnu/codspeed-memtrack
+          sudo mv memtrack-x86_64-unknown-linux-gnu/codspeed-memtrack /usr/local/bin/
+
+          # Set the environment variable
+          echo "CODSPEED_MEMTRACK_BINARY=/usr/local/bin/codspeed-memtrack" >> $GITHUB_ENV
+        env:
+          GH_TOKEN: ${{ github.token }}
 
       # FIXME: Later on, ensure it works with sudo in the action
       - run: codspeed run --mode ${{ matrix.mode }} --api-url https://gql.staging.preview.codspeed.io/ --upload-url https://api.staging.preview.codspeed.io/upload  -- target/codspeed/instrumentation/matthias-memory-profiling-demo/rle_bench
