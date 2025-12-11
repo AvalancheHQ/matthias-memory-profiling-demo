@@ -7,23 +7,25 @@ pub fn rle_encode(input: &str) -> String {
         return String::new();
     }
 
-    let mut result = String::new();
+    let mut result = String::with_capacity(input.len());
+    let mut chars = input.chars().peekable();
 
-    let chars: Vec<char> = input.chars().collect(); // Allocation just to iterate
+    let mut current = chars.next().unwrap();
     let mut count = 1;
-    let mut current = chars[0];
 
-    for &c in &chars[1..] {
+    for c in chars {
         if c == current {
             count += 1;
         } else {
-            // "Churn": format! allocates a temp string for the number
-            result.push_str(&format!("{}{}", count, current));
+            use std::fmt::Write;
+            let _ = write!(result, "{}{}", count, current);
             current = c;
             count = 1;
         }
     }
-    result.push_str(&format!("{}{}", count, current));
+
+    use std::fmt::Write;
+    let _ = write!(result, "{}{}", count, current);
 
     result
 }
