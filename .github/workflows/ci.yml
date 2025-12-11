@@ -38,8 +38,8 @@ jobs:
         run: cargo codspeed build -m instrumentation
 
       - name: Install the runner
-        # run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.2-beta.1/codspeed-runner-installer.sh | sh
-        run: cargo install codspeed-runner --git https://github.com/codSpeedHQ/runner/ --branch cod-1793-runner-foward-environment-in-sudo
+        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.2-beta.1/codspeed-runner-installer.sh | sh
+        # run: cargo install codspeed-runner --git https://github.com/codSpeedHQ/runner/ --branch cod-1793-runner-foward-environment-in-sudo
 
       # FIXME: Install released binary
       - name: Install dependencies required for libbpf-sys (vendored feature)
