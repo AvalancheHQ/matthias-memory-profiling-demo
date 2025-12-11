@@ -22,8 +22,8 @@ jobs:
         include:
           - mode: memory
             runner: ubuntu-latest
-          - mode: walltime
-            runner: codspeed-macro
+          # - mode: walltime
+          #   runner: codspeed-macro
     steps:
       - uses: actions/checkout@v5
       - name: Setup rust toolchain, cache and cargo-codspeed binary
@@ -40,12 +40,18 @@ jobs:
       - run: cargo install memtrack --git https://github.com/CodSpeedHQ/runner/
 
       - name: Build the benchmark target(s)
-        run: cargo codspeed build 
+        run: cargo codspeed build
 
-      - name: Run the benchmarks
-        uses: CodSpeedHQ/action@main
-        with:
-          runner-version: v4.4.2-beta.1
-          mode: ${{ matrix.mode }}
-          run: cargo codspeed run
-          upload-url: https://api.staging.preview.codspeed.io/upload
+      - name: Install the runner
+        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/v4.4.1/codspeed-runner-installer.sh | sh 
+
+      # FIXME: Later on, ensure it works with sudo in the action
+      - run: codspeed run --mode ${{ matrix.mode }} --api-url https://gql.staging.preview.codspeed.io/ --upload-url https://api.staging.preview.codspeed.io/upload  -- target/codspeed/analysis/matthias-memory-profiling-demo/rle_bench
+
+      # - name: Run the benchmarks
+      #   uses: CodSpeedHQ/action@main
+      #   with:
+      #     runner-version: v4.4.2-beta.1
+      #     mode: ${{ matrix.mode }}
+      #     run: cargo codspeed run
+      #     upload-url: https://api.staging.preview.codspeed.io/upload
