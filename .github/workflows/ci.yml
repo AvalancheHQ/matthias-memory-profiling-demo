@@ -22,8 +22,8 @@ jobs:
         include:
           - mode: memory
             runner: ubuntu-latest
-          # - mode: walltime
-          #   runner: codspeed-macro
+          - mode: walltime
+            runner: codspeed-macro
     steps:
       - uses: actions/checkout@v5
       - name: Setup rust toolchain, cache and cargo-codspeed binary
@@ -52,7 +52,7 @@ jobs:
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@main
         with:
-          runner-version: branch:main
+          runner-version: branch:fix-filter-out-empty-symbols
           mode: ${{ matrix.mode }}
           run: cargo codspeed run
           upload-url: https://api.staging.preview.codspeed.io/upload
