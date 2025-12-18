@@ -22,8 +22,8 @@ jobs:
         include:
           - mode: memory
             runner: ubuntu-latest
-          # - mode: walltime
-          #   runner: codspeed-macro
+          - mode: walltime
+            runner: codspeed-macro
     steps:
       - uses: actions/checkout@v5
       - name: Setup rust toolchain, cache and cargo-codspeed binary
@@ -34,50 +34,11 @@ jobs:
           bins: cargo-codspeed
 
       - name: Build the benchmark target(s)
-        run: cargo codspeed build -m instrumentation
-
-      - name: Install memtrack from pre-built artifact
-        run: |
-          # Download the pre-built memtrack binary from the workflow artifact
-          gh run download 20066885444 --repo CodSpeedHQ/runner --name artifacts-build-local-x86_64-unknown-linux-gnu
-
-          # Extract and install the binary
-          tar -xzf memtrack-x86_64-unknown-linux-gnu.tar.gz
-          chmod +x memtrack-x86_64-unknown-linux-gnu/codspeed-memtrack
-          sudo mv memtrack-x86_64-unknown-linux-gnu/codspeed-memtrack /usr/local/bin/
-
-          # Set the environment variable
-          echo "CODSPEED_MEMTRACK_BINARY=/usr/local/bin/codspeed-memtrack" >> $GITHUB_ENV
-        env:
-          GH_TOKEN: ${{ github.token }}
+        run: cargo codspeed build
 
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@main
         with:
-          runner-version: v4.4.2-beta.1
           mode: ${{ matrix.mode }}
-          run: target/codspeed/instrumentation/matthias-memory-profiling-demo/rle_bench
-          # run: cargo codspeed run
-          upload-url: https://api.staging.preview.codspeed.io/upload
-
-
-
-  walltime-benchmarks:
-    name: Run benchmarks
-    runs-on: codspeed-macro
-    steps:
-      - uses: actions/checkout@v5
-      - name: Setup rust toolchain, cache and cargo-codspeed binary
-        uses: moonrepo/setup-rust@v1
-        with:
-          channel: stable
-          cache-target: release
-          bins: cargo-codspeed
-      - name: Build the benchmark target(s)
-        run: cargo codspeed build
-      - name: Run the benchmarks
-        uses: CodSpeedHQ/action@v4
-        with:
-          mode: walltime
           run: cargo codspeed run
           upload-url: https://api.staging.preview.codspeed.io/upload
