@@ -37,7 +37,7 @@ jobs:
         run: cargo install --git https://github.com/CodSpeedHQ/codspeed-rust/ --branch cod-1711-codspeed-rust-add-analysis-mode-support cargo-codspeed
 
       - name: Install memtrack (temp until runner is released)
-        run: curl --proto '=https' --tlsv1.2 -LsSf https://github.com/CodSpeedHQ/runner/releases/download/memtrack-v1.0.1-alpha.1/memtrack-installer.sh | sh
+        run: cargo install --git https://github.com/CodSpeedHQ/runner/ --branch main memtrack
 
       - name: Build the benchmark target(s)
         run: |
