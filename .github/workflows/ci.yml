@@ -37,7 +37,9 @@ jobs:
         run: cargo install --git https://github.com/CodSpeedHQ/codspeed-rust/ --branch cod-1711-codspeed-rust-add-analysis-mode-support cargo-codspeed
 
       - name: Install memtrack (temp until runner is released)
-        run: cargo install --git https://github.com/CodSpeedHQ/runner/ --branch main memtrack
+        run: | 
+          sudo apt-get update && sudo apt-get install -y autopoint bison flex
+          cargo install --git https://github.com/CodSpeedHQ/runner/ --branch main memtrack
 
       - name: Build the benchmark target(s)
         run: |
