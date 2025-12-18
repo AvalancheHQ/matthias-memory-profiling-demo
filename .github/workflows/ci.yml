@@ -42,6 +42,7 @@ jobs:
       - name: Run the benchmarks
         uses: CodSpeedHQ/action@main
         with:
+          runner-version: branch:main
           mode: ${{ matrix.mode }}
           run: cargo codspeed run
           upload-url: https://api.staging.preview.codspeed.io/upload
