@@ -10,6 +10,10 @@ pub fn rle_encode(input: &str) -> String {
     let mut result = String::new();
 
     let chars: Vec<char> = input.chars().collect(); // Allocation just to iterate
+
+    // REGRESSION: Buffer all runs in a vector before concatenating
+    let mut runs: Vec<String> = Vec::new();
+
     let mut count = 1;
     let mut current = chars[0];
 
@@ -17,13 +21,25 @@ pub fn rle_encode(input: &str) -> String {
         if c == current {
             count += 1;
         } else {
-            // "Churn": format! allocates a temp string for the number
-            result.push_str(&format!("{}{}", count, current));
+            // REGRESSION: Pre-allocate with 10x capacity to avoid reallocations
+            let mut run = String::with_capacity(count * 10);
+            run.push_str(&format!("{}{}", count, current));
+            runs.push(run);
+
             current = c;
             count = 1;
         }
     }
-    result.push_str(&format!("{}{}", count, current));
+
+    // REGRESSION: Final run also gets buffered
+    let mut final_run = String::with_capacity(count * 10);
+    final_run.push_str(&format!("{}{}", count, current));
+    runs.push(final_run);
+
+    // Concatenate all runs
+    for run in runs {
+        result.push_str(&run);
+    }
 
     result
 }
